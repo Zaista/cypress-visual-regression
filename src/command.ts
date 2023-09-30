@@ -1,11 +1,13 @@
 import { deserializeError } from 'serialize-error'
 import Chainable = Cypress.Chainable
-import { type CompareSnapshotsPluginArgs, type UpdateSnapshotArgs } from './plugin'
+import { type CompareSnapshotsPluginArgs, type UpdateSnapshotArgs } from './plugin.js'
 
 type CompareSnapshotOptions = {
   errorThreshold: number
   failSilently: boolean
 }
+// todo: are we using this declaration? compareSnapshot is already chainable
+// todo: IMHO, all the declarations should be in a separate file
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -69,8 +71,7 @@ function compareScreenshots(name: string, screenshotOptions: any): Chainable<Com
   const options: CompareSnapshotsPluginArgs = {
     fileName: name,
     errorThreshold,
-    // @ts-expect-error TODO fix potential null error
-    specRelativePath: Cypress.config().spec.relative,
+    specRelativePath: Cypress.config().spec?.relative ?? '',
     specFolder: Cypress.env('visualRegression').specFolder,
     baseDirectory: Cypress.env('visualRegression').baseDirectory,
     diffDirectory: Cypress.env('visualRegression').diffDirectory,
