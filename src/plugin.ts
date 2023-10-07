@@ -5,9 +5,9 @@ import { PNG } from 'pngjs'
 import sanitize from 'sanitize-filename'
 import { serializeError, type ErrorObject } from 'serialize-error'
 
-import { createFolder } from './utils/fs.js'
-import { adjustCanvas, parseImage } from './utils/image.js'
-import { logger } from './logger.js'
+import { createFolder } from './utils/fs'
+import { adjustCanvas, parseImage } from './utils/image'
+import { logger } from './logger'
 
 export type UpdateSnapshotOptions = {
   screenshotName: string
@@ -35,6 +35,7 @@ export type CompareSnapshotResult = {
 /** Update the base snapshot .png by copying the generated snapshot to the base snapshot directory.
  * The target path is constructed from parts at runtime in node to be OS independent.  */
 const updateSnapshot = async (options: UpdateSnapshotOptions): Promise<boolean> => {
+  // TODO: check this expression. If options is of type UpdateSnapshotOptions, then options.baseDirectory is not optional
   const toDir = options.baseDirectory ?? path.join(process.cwd(), 'cypress', 'snapshots', 'base')
   const destDir = path.join(toDir, options.specName)
   const destFile = path.join(destDir, `${options.screenshotName}.png`)
